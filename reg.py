@@ -14,14 +14,14 @@ import json
 app = flask.Flask(__name__, template_folder='.')
 
 #-----------------------------------------------------------------------
-@app.route('', methods=['GET'])
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
     return flask.send_file('index.html')
 
 #-----------------------------------------------------------------------
-def getoverviews():
+@app.route('/regoverviews', methods=['GET'])
+def reg_overviews():
     query = {
         "dept": flask.request.args.get("dept"),
         "coursenum": flask.request.args.get("coursenum"),

@@ -14,7 +14,6 @@ import contextlib
 # constants
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
 #-----------------------------------------------------------------------
-
 def reg_overviews(query):
     try:
         with sqlite3.connect(
@@ -83,7 +82,6 @@ SELECT DISTINCT cl.classid, cr.dept, cr.coursenum, c.area, c.title
         ]
 #-----------------------------------------------------------------------
 def reg_details(query):
-
     try:
         classid = query["classid"]
         if not classid:

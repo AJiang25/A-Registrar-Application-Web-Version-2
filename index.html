@@ -1,11 +1,66 @@
 <!--  Do cursor, error stuff here
  receive the http request here and form the URL here
- do all of this twice for details and overviews -->
+ do all of this twice for details and overviews, about 350 lines -->
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Registrar's Office Class Search</title>
+        <title>Registrar's Office: Class Search</title>
     </head>
+    <body>
+        <script src=
+            "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js">
+        </script>
+        <script src=
+            "https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js">
+        </script>
+        <script>
+            'use strict';
+
+            function handleError() {
+                alert('Error: Failed to fetch data from server');
+            }
+
+            let request = null;
+
+            function getResults() {
+                let authorInput = document.getElementById('authorInput');
+                let author = authorInput.value;
+                let encodedAuthor = encodeURIComponent(author);
+                let url = '/searchresults?author='' + encodedAuthor;
+
+                if (request !== null)
+                    request.abort();
+                request = new XMLHttpRequest();
+                request.onload = handleResponse;
+                request.onerror = handleError;
+                request.open('GET', url);
+                request.send();
+            }
+
+            function debouncedGetResults() {
+                clearTimeout(timer);
+                timer = window.setTimeout(getResults, 500);
+            }
+
+            function convertToHTML() {
+
+            }
+
+            function setupHeader() {
+               
+            }
+
+            function setupFooter() {
+                
+            }
+
+            function setup() {
+                setupHeader();
+                setupFooter();
+            }
+            $('document').ready(setup);
+        </script>
+    </body>
 </html>
