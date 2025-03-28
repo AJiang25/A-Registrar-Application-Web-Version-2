@@ -7,16 +7,21 @@
 # imports
 import flask
 import database
+import json
 
 #-----------------------------------------------------------------------
 
 app = flask.Flask(__name__, template_folder='.')
 
 #-----------------------------------------------------------------------
-
+@app.route('', methods=['GET'])
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
+    return flask.send_file('index.html')
+
+#-----------------------------------------------------------------------
+def getoverviews():
     query = {
         "dept": flask.request.args.get("dept"),
         "coursenum": flask.request.args.get("coursenum"),
@@ -24,31 +29,16 @@ def index():
         "title": flask.request.args.get("title")
     }
 
+    # Convert the result from database files as json
     valid, result = database.reg_overviews(query)
     if not valid:
         result = {"error": result}
-
-    html_code = flask.render_template(
-        'regoverviews.html',
-        dept=query["dept"],
-        coursenum=query["coursenum"],
-        area = query["area"],
-        title=query["title"],
-        result = result
-    )
-
-    response = flask.make_response(html_code)
-
-    if query["dept"] is not None:
-        response.set_cookie("dept", query["dept"])
-    if query["coursenum"] is not None:
-        response.set_cookie("coursenum", query["coursenum"])
-    if query["area"] is not None:
-        response.set_cookie("area", query["area"])
-    if query["title"] is not None:
-        response.set_cookie("title", query["title"])
+    
+    json_doc = json.dumps(result)
+    response = flask.make_response(json_doc)
+    response.headers['Content-Type'] = 'application/json'
     return response
-
+    
 #-----------------------------------------------------------------------
 @app.route('/regdetails', methods=['GET'])
 def reg_details():
@@ -58,23 +48,9 @@ def reg_details():
     if not valid:
         result = {"error": result}
 
-    dept = flask.request.cookies.get("dept","")
-    coursenum = flask.request.cookies.get("coursenum","")
-    area = flask.request.cookies.get("area","")
-    title = flask.request.cookies.get("title","")
-
-    html_code = flask.render_template(
-        'regdetails.html',
-        classid=query["classid"],
-        result = result,
-        dept = dept,
-        coursenum = coursenum,
-        area = area,
-        title = title
-    )
-
-    response = flask.make_response(html_code)
-
+    json_doc = json.dumps(result)
+    response = flask.make_response(json_doc)
+    response.headers['Content-Type'] = 'application/json'
     return response
 
 #-----------------------------------------------------------------------
