@@ -18,35 +18,211 @@
         <script>
             'use strict';
 
+            function convertToHTMLOverviews(result) {
+                let overviewsTemplate = `
+                <table id="overviewsTable" border="1">
+                <thead>
+                    <tr>
+                        <td><strong>ClassId</strong></td>
+                        <td><strong>Dept</strong></td>
+                        <td><strong>Num</strong></td>
+                        <td><strong>Area</strong></td>
+                        <td><strong>Title</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#rows}}
+                        <tr>
+                            <td>
+                                <a href = "#" class ="detail-link" data-classid = "{{classid}}">
+                                    {{classid}} 
+                                </a>
+                            </td>
+                            <td>{{dept}}</td>
+                            <td>{{coursenum}}</td>
+                            <td>{{area}}</td>
+                            <td>{{title}}</td>
+                        </tr>
+                    {{/rows}}
+                </tbody>
+            </table>`;
+            let map = {rows: result};
+            let html = Mustache.render(overviewsTemplate, map);
+            return html;
+            }
+
+            function convertToHTMLDetails(result){
+                let detailsTemplate = `
+                <h2>Class Details</h2>
+                <table id = "classDetailsTable" border = "1">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Class Id</strong>
+                            </td> 
+                            <td>{{classid}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Days</strong>
+                            </td> 
+                            <td>{{days}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Start time</strong>
+                            </td> 
+                            <td>{{starttime}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>End time</strong>
+                            </td> 
+                            <td>{{endtime}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Building</strong>
+                            </td> 
+                            <td>{{building}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Room</strong>
+                            </td> 
+                            <td>{{room}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+                <h2>Course Details</h2>
+                <table id = "courseDetailsTable" border = "1">
+                    <tbody>
+                        <tr>
+                            <td class = "label">
+                                <strong> Course Id</strong>
+                            </td>
+                            <td>{{courseid}}</td>
+                        </tr>
+                        {{#departments}}
+                        <tr>
+                            <td class = "label">
+                                <strong> Dept and Number</strong>
+                            </td>
+                            <td>
+                                {{dept}} {{coursenum}}
+                            </td>
+                        </tr>
+                        {{/departments}}
+                        <tr>
+                            <td class = "label">
+                                <strong> Area </strong>
+                            </td>
+                            <td>{{area}}</td>
+                        </tr>
+                        <tr>
+                            <td class = "label">
+                                <strong> Title </strong>
+                            </td>
+                            <td>{{title}}</td>
+                        </tr>        
+                        <tr>
+                            <td class = "label">
+                                <strong> Description </strong>
+                            </td>
+                            <td>{{description}}</td>
+                        </tr>
+                        <tr>
+                            <td class = "label">
+                                <strong> Prerequisites </strong>
+                            </td>
+                            <td>{{prerequisites}}</td>
+                        </tr> 
+                        {{#professors}}
+                        <tr>
+                            <td class = "label">
+                                <strong> Professor </strong>
+                            </td>
+                            <td>
+                                {{.}}
+                            </td>
+                        </tr>
+                        {{/professors}}
+                    </tbody>
+                </table>`;
+            return Mustache.render(detailsTemplate, result);
+            }
+
+            function handleResponseOverviews(result){
+                let html = convertToHTMLOverviews(result);
+                $('#resultsDiv').html(html);
+            }
+
+            function handleResponseDetails(result){
+                let html = convertToHTMLDetails(result);
+                $('#resultsDiv').html(html);
+            }
+
             function handleError() {
                 alert('Error: Failed to fetch data from server');
             }
 
             let request = null;
 
-            function getResults() {
-                let authorInput = document.getElementById('authorInput');
-                let author = authorInput.value;
-                let encodedAuthor = encodeURIComponent(author);
-                let url = '/searchresults?author='' + encodedAuthor;
+            function getResultsOverviews(){
+                let dept = $('#deptInput').val();
+                let coursenum = $('#coursenumInput').val();
+                let area = $('#areaInput').val();
+                let title = $('#titleInput').val();
 
-                if (request !== null)
+                let url = '/regoverviews?' +
+                    'dept=' + encodeURIComponent(dept) +
+                    '&coursenum=' + encodeURIComponent(coursenum) +
+                    '&area=' + encodeURIComponent(area) +
+                    '&title=' + encodeURIComponent(title);
+
+                if(request !== null){
                     request.abort();
-                request = new XMLHttpRequest();
-                request.onload = handleResponse;
-                request.onerror = handleError;
-                request.open('GET', url);
-                request.send();
+                }
+
+                let requestData = {
+                    type: 'GET',
+                    url: url,
+                    success: handleResponseOverviews,
+                    error: handleError
+                };
+
+                request = $.ajax(requestData);
             }
 
-            function debouncedGetResults() {
+            function getResultsDetails() {
+                let encodedClassId = encodeURIComponent(classid);
+                let url = '/regdetails?classid=' + encodedClassId;
+
+                if(request !== null){
+                    request.abort();
+                }
+
+                let requestData = {
+                    type: 'GET',
+                    url: url,
+                    success: handleResponseDetails,
+                    error: handleError
+                };
+
+                request = $.ajax(requestData);
+            }
+
+            function debouncedGetResultsOverviews() {
                 clearTimeout(timer);
                 timer = window.setTimeout(getResults, 500);
             }
 
-            function convertToHTML() {
-
+            function debouncedGetResultsDetails(){
+                clearTimeout(timer);
+                timer = window.setTimeout(getResults, 500);
             }
+
 
             function setupHeader() {
                
@@ -59,8 +235,17 @@
             function setup() {
                 setupHeader();
                 setupFooter();
+                
+                $('#deptInput, #coursenumInput, #areaInput, #titleInput')
+                    .on('input', debouncedGetResultsOverviews);
+                
+                
             }
+               
             $('document').ready(setup);
         </script>
     </body>
 </html>
+
+
+
