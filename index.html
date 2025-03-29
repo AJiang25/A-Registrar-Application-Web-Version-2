@@ -21,31 +21,31 @@
             function convertToHTMLOverviews(result) {
                 let overviewsTemplate = `
                 <table id="overviewsTable" border="1">
-                <thead>
-                    <tr>
-                        <td><strong>ClassId</strong></td>
-                        <td><strong>Dept</strong></td>
-                        <td><strong>Num</strong></td>
-                        <td><strong>Area</strong></td>
-                        <td><strong>Title</strong></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#rows}}
+                    <thead>
                         <tr>
-                            <td>
-                                <a href = "#" class ="detail-link" data-classid = "{{classid}}">
-                                    {{classid}} 
-                                </a>
-                            </td>
-                            <td>{{dept}}</td>
-                            <td>{{coursenum}}</td>
-                            <td>{{area}}</td>
-                            <td>{{title}}</td>
+                            <td><strong>ClassId</strong></td>
+                            <td><strong>Dept</strong></td>
+                            <td><strong>Num</strong></td>
+                            <td><strong>Area</strong></td>
+                            <td><strong>Title</strong></td>
                         </tr>
-                    {{/rows}}
-                </tbody>
-            </table>`;
+                    </thead>
+                    <tbody>
+                        {{#rows}}
+                            <tr>
+                                <td>
+                                    <a href = "#" class ="detail-link" data-classid = "{{classid}}">
+                                        {{classid}} 
+                                    </a>
+                                </td>
+                                <td>{{dept}}</td>
+                                <td>{{coursenum}}</td>
+                                <td>{{area}}</td>
+                                <td>{{title}}</td>
+                            </tr>
+                        {{/rows}}
+                    </tbody>
+                </table>`;
             let map = {rows: result};
             let html = Mustache.render(overviewsTemplate, map);
             return html;
@@ -156,18 +156,45 @@
             }
 
             function handleResponseOverviews(result){
-                let html = convertToHTMLOverviews(result);
+                if (this.status !== 200) {
+                    alert('Error: Failed to fetch data from server');
+                    return;
+                }
+
+                let res = JSON.parse(result)
+                if (!res[0]) {
+                    // Not sure if this is the right error message
+                    alert('Error: XXXX FIX THIS');
+                    return;
+                }
+                let data = res[1];
+
+                let html = convertToHTMLOverviews(data);
                 $('#resultsDiv').html(html);
-                // go back to the handout page 2
-                // first element of response indicates if it demonstrates this response is a successful one if it is successful
+                // go back to the handout page 2: 
+                // first element of response indicates if it 
+                // demonstrates this response is a successful one if it is successful
                 // you shoudl render the html or it should be an error message 
                 // basically need and if else statement 
 
-                // first parse into 2 things, one is true or false, the other is the dictionary. Then only pass in the dictionary over to the convertToHTML
+                // first parse into 2 things, one is true or false, 
+                // the other is the dictionary. Then only pass in the 
+                // dictionary over to the convertToHTML
             }
 
             function handleResponseDetails(result){
-                let html = convertToHTMLDetails(result);
+                if (this.status !== 200) {
+                    alert('Error: Failed to fetch data from server');
+                    return;
+                }
+                let res = JSON.parse(this.result)
+                if (!res[0]) {
+                    // Not sure if this is the right error message
+                    alert('Error: XXXX FIX THIS');
+                    return;
+                }
+                let data = res[1];
+                let html = convertToHTMLDetails(data);
                 $('#resultsDiv').html(html);
 
                 // more error handling, checked if status is 200 failed to fetch data error, parse result
@@ -198,15 +225,17 @@
                 let requestData = {
                     type: 'GET',
                     url: url,
-                    success: handleResponseOverviews(),
+                    success: handleResponseOverviews,
                     error: handleError
                 };
 
                 request = $.ajax(requestData);
             }
 
+            let timer = null;
+
             // pass in classid into one of the arguments in getResultsDetails 
-            function getResultsDetails() {
+            function getResultsDetails(classid) {
                 let encodedClassId = encodeURIComponent(classid);
                 let url = '/regdetails?classid=' + encodedClassId;
 
@@ -234,18 +263,28 @@
                 timer = window.setTimeout(getResultsDetails, 500);
             }
 
-
             function setup() {
+                $('#deptInput').on('input', debouncedGetResultsOverviews);
+                $('#coursenumInput').on('input', debouncedGetResultsOverviews);
+                $('#areaInput').on('input', debouncedGetResultsOverviews);
+                $('#titleInput').on('input', debouncedGetResultsOverviews);
+
+                $(document).on('click', '.detail-link', event => {
+                    event.preventDefault();
+                    let classid = $(this).data('classid')
+                    getResultsDetails(classid);
+                });
                 
-                
+                getResultsOverviews();
                 // add document.element 4 times
                 // call get results overviews function
             }
             // add event listener 4 time
               
            // get rid of line below and document event listener set up 
-            // put htis: document.addEventListener(’DOMContentLoaded’, setup);   
-            $('document').ready(setup);
+            // put this: document.addEventListener(’DOMContentLoaded’, setup);   
+            // $('document').ready(setup);
+            document.addEventListener('DOMContentLoaded', setup);
         </script>
     </body>
 </html>
