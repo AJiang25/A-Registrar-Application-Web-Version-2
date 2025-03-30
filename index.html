@@ -151,26 +151,43 @@
                     </tbody>
                 </table>`;
                 let map = {result: result};
-                // need to refer to the second element in which that one has the dictionary
             return Mustache.render(detailsTemplate, map);
             }
 
-            function handleResponseOverviews(result){
-                let html = convertToHTMLOverviews(result);
-                $('#resultsDiv').html(html);
-                // go back to the handout page 2
-                // first element of response indicates if it demonstrates this response is a successful one if it is successful
-                // you shoudl render the html or it should be an error message 
-                // basically need and if else statement 
+            function handleResponseOverviews(){
+                if(this.status!=200){
+                    alert('Error: Failed to fetch data from server');
+                    return;
+                }
 
-                // first parse into 2 things, one is true or false, the other is the dictionary. Then only pass in the dictionary over to the convertToHTML
+                let parsed = JSON.parse(this.response);
+
+                if(parsed[0]===true){
+                    let data = parsed[1];
+                    let html = convertToHTMLOverviews(data);
+                    let resultsDiv = document.getElementById('resultsDiv');
+                    resultsDiv.innerHTML = html;
+                } else{
+                    alert('Error: ' + parsed[1]);
+                }
             }
 
-            function handleResponseDetails(result){
-                let html = convertToHTMLDetails(result);
-                $('#resultsDiv').html(html);
+            function handleResponseDetails(){
+                if(this.status!=200){
+                    alert('Error: Failed to fetch data from server');
+                    return;
+                }
 
-                // more error handling, checked if status is 200 failed to fetch data error, parse result
+                let parsed = JSON.parse(this.response);
+
+                if(parsed[0]===true){
+                    let data = parsed[1];
+                    let html = convertToHTMLDetails(data);
+                    let resultsDiv = document.getElementById('resultsDiv');
+                    resultsDiv.innerHTML = html;
+                } else{
+                    alert('Error: ' + parsed[1]);
+                }
             }
 
             function handleError() {
@@ -198,15 +215,15 @@
                 let requestData = {
                     type: 'GET',
                     url: url,
-                    success: handleResponseOverviews(),
+                    success: handleResponseOverviews,
                     error: handleError
                 };
 
                 request = $.ajax(requestData);
             }
 
-            // pass in classid into one of the arguments in getResultsDetails 
-            function getResultsDetails() {
+            // pass in classid into one of the arguments in getResultsDetails and modify files
+            function getResultsDetails(classid) {
                 let encodedClassId = encodeURIComponent(classid);
                 let url = '/regdetails?classid=' + encodedClassId;
 
@@ -236,16 +253,18 @@
 
 
             function setup() {
-                
-                
-                // add document.element 4 times
-                // call get results overviews function
+                let deptInput = document.getElementById('deptInput');
+                let coursenumInput = document.getElementById('coursenumInput');
+                let areaInput = document.getElementById('areaInput');
+                let titleInput = document.getElementById('titleInput');
+
+                deptInput.addEventListener('input', debouncedGetResultsOverviews);
+                coursenumInput.addEventListener('input', debouncedGetResultsOverviews);
+                areaInput.addEventListener('input', debouncedGetResultsOverviews);
+                titleInput.addEventListener('input', debouncedGetResultsOverviews);
+
             }
-            // add event listener 4 time
-              
-           // get rid of line below and document event listener set up 
-            // put htis: document.addEventListener(’DOMContentLoaded’, setup);   
-            $('document').ready(setup);
+            document.addEventListener('DOMContentLoaded', setup);   
         </script>
     </body>
 </html>
