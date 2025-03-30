@@ -264,6 +264,12 @@
                 areaInput.addEventListener('input', debouncedGetResultsOverviews);
                 titleInput.addEventListener('input', debouncedGetResultsOverviews);
 
+                $(document).on('click', '.detail-link', event => {
+                    event.preventDefault();
+                    let classid = $(this).data('classid')
+                    getResultsDetails(classid);
+                });
+
             }
             document.addEventListener('DOMContentLoaded', setup);   
         </script>
