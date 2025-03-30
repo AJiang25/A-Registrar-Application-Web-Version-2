@@ -21,31 +21,31 @@
             function convertToHTMLOverviews(result) {
                 let overviewsTemplate = `
                 <table id="overviewsTable" border="1">
-                <thead>
-                    <tr>
-                        <td><strong>ClassId</strong></td>
-                        <td><strong>Dept</strong></td>
-                        <td><strong>Num</strong></td>
-                        <td><strong>Area</strong></td>
-                        <td><strong>Title</strong></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#rows}}
+                    <thead>
                         <tr>
-                            <td>
-                                <a href = "#" class ="detail-link" data-classid = "{{classid}}">
-                                    {{classid}} 
-                                </a>
-                            </td>
-                            <td>{{dept}}</td>
-                            <td>{{coursenum}}</td>
-                            <td>{{area}}</td>
-                            <td>{{title}}</td>
+                            <td><strong>ClassId</strong></td>
+                            <td><strong>Dept</strong></td>
+                            <td><strong>Num</strong></td>
+                            <td><strong>Area</strong></td>
+                            <td><strong>Title</strong></td>
                         </tr>
-                    {{/rows}}
-                </tbody>
-            </table>`;
+                    </thead>
+                    <tbody>
+                        {{#rows}}
+                            <tr>
+                                <td>
+                                    <a href = "#" class ="detail-link" data-classid = "{{classid}}">
+                                        {{classid}} 
+                                    </a>
+                                </td>
+                                <td>{{dept}}</td>
+                                <td>{{coursenum}}</td>
+                                <td>{{area}}</td>
+                                <td>{{title}}</td>
+                            </tr>
+                        {{/rows}}
+                    </tbody>
+                </table>`;
             let map = {rows: result};
             let html = Mustache.render(overviewsTemplate, map);
             return html;
@@ -222,7 +222,9 @@
                 request = $.ajax(requestData);
             }
 
-            // pass in classid into one of the arguments in getResultsDetails and modify files
+            let timer = null;
+
+            // pass in classid into one of the arguments in getResultsDetails 
             function getResultsDetails(classid) {
                 let encodedClassId = encodeURIComponent(classid);
                 let url = '/regdetails?classid=' + encodedClassId;
@@ -250,7 +252,6 @@
                 clearTimeout(timer);
                 timer = window.setTimeout(getResultsDetails, 500);
             }
-
 
             function setup() {
                 let deptInput = document.getElementById('deptInput');
