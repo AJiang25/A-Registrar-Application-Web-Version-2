@@ -1,6 +1,3 @@
-<!--  Do cursor, error stuff here
- receive the http request here and form the URL here
- do all of this twice for details and overviews, about 350 lines -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,6 +6,18 @@
         <title>Registrar's Office: Class Search</title>
     </head>
     <body>
+        <div id ="header">
+            <h1 id = "headerTitle">Registrar's Office: Class Search</h1>
+            <input type="text" id="deptInput" placeholder="Department">
+            <input type="text" id="coursenumInput" placeholder="Number">
+            <input type="text" id="areaInput" placeholder="Area">
+            <input type="text" id="titleInput" placeholder="Title">
+        </div>
+        <div id="resultsDiv"></div>
+        <div id="modal"></div>
+        <div id="footer">
+            <h1 id = "footerText">Created by Arnold Jiang and Amanda Chan</h1>
+        </div>
         <script src=
             "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js">
         </script>
@@ -34,9 +43,11 @@
                         {{#rows}}
                             <tr>
                                 <td>
-                                    <a href = "#" class ="detail-link" data-classid = "{{classid}}">
-                                        {{classid}} 
-                                    </a>
+                                    <button
+                                        id="button{{classid}}"
+                                        onclick="getResultsDetails({{classid}})">
+                                        {{classid}}
+                                    </button>
                                 </td>
                                 <td>{{dept}}</td>
                                 <td>{{coursenum}}</td>
@@ -46,11 +57,11 @@
                         {{/rows}}
                     </tbody>
                 </table>`;
-            let map = {rows: result};
-            let html = Mustache.render(overviewsTemplate, map);
-            return html;
+                let map = {rows: result};
+                return Mustache.render(overviewsTemplate, map);;
             }
 
+            // Ask about turning this into a modal
             function convertToHTMLDetails(result){
                 let detailsTemplate = `
                 <h2>Class Details</h2>
@@ -60,37 +71,37 @@
                             <td>
                                 <strong>Class Id</strong>
                             </td> 
-                            <td>{{classid}}</td>
+                            <td>{{result.classid}}</td>
                         </tr>
                         <tr>
                             <td>
                                 <strong>Days</strong>
                             </td> 
-                            <td>{{days}}</td>
+                            <td>{{result.days}}</td>
                         </tr>
                         <tr>
                             <td>
                                 <strong>Start time</strong>
                             </td> 
-                            <td>{{starttime}}</td>
+                            <td>{{result.starttime}}</td>
                         </tr>
                         <tr>
                             <td>
                                 <strong>End time</strong>
                             </td> 
-                            <td>{{endtime}}</td>
+                            <td>{{result.endtime}}</td>
                         </tr>
                         <tr>
                             <td>
                                 <strong>Building</strong>
                             </td> 
-                            <td>{{building}}</td>
+                            <td>{{result.building}}</td>
                         </tr>
                         <tr>
                             <td>
                                 <strong>Room</strong>
                             </td> 
-                            <td>{{room}}</td>
+                            <td>{{result.room}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -102,9 +113,9 @@
                             <td class = "label">
                                 <strong> Course Id</strong>
                             </td>
-                            <td>{{courseid}}</td>
+                            <td>{{result.courseid}}</td>
                         </tr>
-                        {{#departments}}
+                        {{#result.departments}}
                         <tr>
                             <td class = "label">
                                 <strong> Dept and Number</strong>
@@ -113,81 +124,57 @@
                                 {{dept}} {{coursenum}}
                             </td>
                         </tr>
-                        {{/departments}}
+                        {{/result.departments}}
                         <tr>
                             <td class = "label">
                                 <strong> Area </strong>
                             </td>
-                            <td>{{area}}</td>
+                            <td>{{result.area}}</td>
                         </tr>
                         <tr>
                             <td class = "label">
                                 <strong> Title </strong>
                             </td>
-                            <td>{{title}}</td>
+                            <td>{{result.title}}</td>
                         </tr>        
                         <tr>
                             <td class = "label">
                                 <strong> Description </strong>
                             </td>
-                            <td>{{description}}</td>
+                            <td>{{result.description}}</td>
                         </tr>
                         <tr>
                             <td class = "label">
                                 <strong> Prerequisites </strong>
                             </td>
-                            <td>{{prerequisites}}</td>
+                            <td>{{result.prerequisites}}</td>
                         </tr> 
-                        {{#professors}}
+                        {{#result.professors}}
                         <tr>
                             <td class = "label">
                                 <strong> Professor </strong>
                             </td>
                             <td>
-                                {{.}}
+                                {{result.professors}}
                             </td>
                         </tr>
-                        {{/professors}}
+                        {{/result.professors}}
                     </tbody>
                 </table>`;
-                let map = {result: result};
-            return Mustache.render(detailsTemplate, map);
+                let map = {
+                    result: result,
+                };
+                return Mustache.render(detailsTemplate, map);
             }
 
-            function handleResponseOverviews(){
-                if(this.status!=200){
-                    alert('Error: Failed to fetch data from server');
-                    return;
-                }
-
-                let parsed = JSON.parse(this.response);
-
-                if(parsed[0]===true){
-                    let data = parsed[1];
-                    let html = convertToHTMLOverviews(data);
-                    let resultsDiv = document.getElementById('resultsDiv');
-                    resultsDiv.innerHTML = html;
-                } else{
-                    alert('Error: ' + parsed[1]);
-                }
+            function handleResponseOverviews(response) {
+                let html = convertToHTMLOverviews(response);
+                $('#resultsDiv').html(html);
             }
 
-            function handleResponseDetails(){
-                if(this.status!=200){
-                    alert('Error: Failed to fetch data from server');
-                    return;
-                }
-
-                let parsed = JSON.parse(this.response);
-
-                if(parsed[0]===true){
-                    let data = parsed[1];
-                    let html = convertToHTMLDetails(data);
-                    let resultsDiv = document.getElementById('resultsDiv');
-                    resultsDiv.innerHTML = html;
-                } else{
-                    alert('Error: ' + parsed[1]);
-                }
+            function handleResponseDetails(response) {
+                let html = convertToHTMLDetails(response);
+                $('#modal').html(html);
             }
 
             function handleError() {
@@ -196,19 +183,23 @@
 
             let request = null;
 
-            function getResultsOverviews(){
+            function getResultsOverviews() {
                 let dept = $('#deptInput').val();
                 let coursenum = $('#coursenumInput').val();
                 let area = $('#areaInput').val();
                 let title = $('#titleInput').val();
 
-                let url = '/regoverviews?' +
-                    'dept=' + encodeURIComponent(dept) +
-                    '&coursenum=' + encodeURIComponent(coursenum) +
-                    '&area=' + encodeURIComponent(area) +
-                    '&title=' + encodeURIComponent(title);
+                let url = '/regoverviews?'
+                if (dept)
+                    url += 'dept=' + encodeURIComponent(dept);
+                if (coursenum)
+                    url += '&coursenum=' + encodeURIComponent(coursenum);
+                if (coursenum)
+                    url += '&area=' + encodeURIComponent(area);
+                if (title)
+                    url += '&title=' + encodeURIComponent(title);
 
-                if(request !== null){
+                if (request !== null) {
                     request.abort();
                 }
 
@@ -218,18 +209,15 @@
                     success: handleResponseOverviews,
                     error: handleError
                 };
-
                 request = $.ajax(requestData);
             }
 
             let timer = null;
 
-            // pass in classid into one of the arguments in getResultsDetails 
             function getResultsDetails(classid) {
-                let encodedClassId = encodeURIComponent(classid);
-                let url = '/regdetails?classid=' + encodedClassId;
+                let url = '/regdetails?classid=' + encodeURIComponent(classid);
 
-                if(request !== null){
+                if (request !== null) {
                     request.abort();
                 }
 
@@ -239,7 +227,6 @@
                     success: handleResponseDetails,
                     error: handleError
                 };
-
                 request = $.ajax(requestData);
             }
 
@@ -254,15 +241,10 @@
             }
 
             function setup() {
-                let deptInput = document.getElementById('deptInput');
-                let coursenumInput = document.getElementById('coursenumInput');
-                let areaInput = document.getElementById('areaInput');
-                let titleInput = document.getElementById('titleInput');
-
-                deptInput.addEventListener('input', debouncedGetResultsOverviews);
-                coursenumInput.addEventListener('input', debouncedGetResultsOverviews);
-                areaInput.addEventListener('input', debouncedGetResultsOverviews);
-                titleInput.addEventListener('input', debouncedGetResultsOverviews);
+                $('#deptInput').on('input', debouncedGetResultsOverviews);
+                $('#coursenumInput').on('input', debouncedGetResultsOverviews);
+                $('#areaInput').on('input', debouncedGetResultsOverviews);
+                $('#titleInput').on('input', debouncedGetResultsOverviews);
 
                 $(document).on('click', '.detail-link', event => {
                     event.preventDefault();
@@ -270,6 +252,7 @@
                     getResultsDetails(classid);
                 });
 
+                getResultsOverviews();
             }
             document.addEventListener('DOMContentLoaded', setup);   
         </script>
