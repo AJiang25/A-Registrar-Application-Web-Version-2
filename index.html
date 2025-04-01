@@ -17,15 +17,26 @@
     <body>
         <div class="container-fluid header sticky-top" id = "header">
             <center>
-                <h1 id = "headerTitle">Registrar's Office: Class Search</h1>
-                <input class="col" type="text" id="deptInput" placeholder="Department">
-                <input class="col" type="text" id="coursenumInput" placeholder="Number">
-                <input class="col" type="text" id="areaInput" placeholder="Area">
-                <input class="col" type="text" id="titleInput" placeholder="Title">
-           </center>
+                <h1 id="headerTitle">Registrar's Office: Class Search</h1>
+            </center>
+            <div class="row">
+                <div class="col-3">
+                    <input class="form-control" type="text" id="deptInput" placeholder="Department">
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="text" id="coursenumInput" placeholder="Number">
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="text" id="areaInput" placeholder="Area">
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="text" id="titleInput" placeholder="Title">
+                </div>
+            </div>
+            <br/>
         </div>
 
-        <div id="resultsDiv"></div>
+        <div class="container-fluid" id="resultsDiv"></div>
 
         <div class="modal" id="detailsModal">
             <div class="modal-dialog">
@@ -49,7 +60,7 @@
 
         <div class="container-fluid footer sticky-bottom" id = "footer">
             <center>
-                <p id = "footerText">Created by Arnold Jiang and Amanda Chan</p>
+                <p id="footerText">Created by Arnold Jiang and Amanda Chan</p>
            </center>
         </div>
         <script src=
@@ -63,7 +74,7 @@
 
             function convertToHTMLOverviews(result) {
                 let overviewsTemplate = `
-                <table class="table table-striped" id="overviewsTable" border="1">
+                <table class="table table-striped" id="overviewsTable"
                     <thead>
                         <tr>
                             <td><strong>ClassId</strong></td>
