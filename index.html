@@ -12,7 +12,7 @@
         <title>Registrar's Office: Class Search</title>
     </head>
     <body>
-        <div class="container-fluid, header" id = "header">
+        <div class="container-fluid, header sticky-top" id = "header">
             <center>
             <h1 id = "headerTitle">Registrar's Office: Class Search</h1>
             <input type="text" id="deptInput" placeholder="Department">
@@ -23,10 +23,30 @@
         </div>
 
         <div id="resultsDiv"></div>
-        <div id="modal"></div>
-        <div class="container-fluid, footer" id = "footer">
+
+        <div class="modal" id="detailsModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Registrar's Office</h4>
+                        <button class="btn-close" data-bs-dismiss="modal">
+
+                        </button>
+                    </div>
+                    <div class="modal-body" id="detailsModalBody">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid footer sticky-bottom" id = "footer">
             <center>
-                <h1 id = "footerText">Created by Arnold Jiang and Amanda Chan</h1>
+                <p id = "footerText">Created by Arnold Jiang and Amanda Chan</p>
            </center>
         </div>
         <script src=
@@ -40,7 +60,7 @@
 
             function convertToHTMLOverviews(result) {
                 let overviewsTemplate = `
-                <table id="overviewsTable" border="1">
+                <table class="table table-striped" id="overviewsTable" border="1">
                     <thead>
                         <tr>
                             <td><strong>ClassId</strong></td>
@@ -76,7 +96,7 @@
             function convertToHTMLDetails(result){
                 let detailsTemplate = `
                 <h2>Class Details</h2>
-                <table id = "classDetailsTable" border = "1">
+                <table class="table table-striped" id = "classDetailsTable">
                     <tbody>
                         <tr>
                             <td>
@@ -118,7 +138,7 @@
                 </table>
             
                 <h2>Course Details</h2>
-                <table id = "courseDetailsTable" border = "1">
+                <table class="table table-striped" id = "courseDetailsTable">
                     <tbody>
                         <tr>
                             <td class = "label">
@@ -185,7 +205,8 @@
 
             function handleResponseDetails(response) {
                 let html = convertToHTMLDetails(response);
-                $('#modal').html(html);
+                $('#detailsModalBody').html(html);
+                $('#detailsModal').modal('show');
             }
 
             function handleError() {
