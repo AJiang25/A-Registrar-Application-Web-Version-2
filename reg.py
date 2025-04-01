@@ -31,6 +31,9 @@ def reg_overviews():
 
     # Convert the result from database files as json
     valid, result = database.reg_overviews(query)
+    # ASK QUESTION HERE:
+    # The result is not what it is supposed to be for error handling. I would ask about this in OH
+    # THIS ISSUE IS PRESENT IN reg_details() too.
     if not valid:
         result = {"error": result}
     
