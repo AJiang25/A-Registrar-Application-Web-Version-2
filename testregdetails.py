@@ -80,6 +80,25 @@ def main():
         run_test(server_url, browser_process, '8321')
 
         # Add more tests here.
+        # Coverage Case Testing
+        run_test(server_url, browser_process, '9032')
+        run_test(server_url, browser_process, '8293')
+        run_test(server_url, browser_process, '9977')
+        run_test(server_url, browser_process, '9012')
+        run_test(server_url, browser_process, '10188')
+        run_test(server_url, browser_process, '10261')
+        run_test(server_url, browser_process, '10262')
+        run_test(server_url, browser_process, '10263')
+        run_test(server_url, browser_process, '10264')
+        run_test(server_url, browser_process, '9158')
+        run_test(server_url, browser_process, '9897')
+        run_test(server_url, browser_process, '8390')
+        run_test(server_url, browser_process, '10260')
+        run_test(server_url, browser_process, '10250')
+        run_test(server_url, browser_process, '9980')
+        run_test(server_url, browser_process, '10244')
+        run_test(server_url, browser_process, '8333')
+        run_test(server_url, browser_process, '8334')
 
 if __name__ == '__main__':
     main()

@@ -35,7 +35,10 @@ def reg_overviews():
     # The result is not what it is supposed to be for error handling. I would ask about this in OH
     # THIS ISSUE IS PRESENT IN reg_details() too.
     if not valid:
-        result = {"error": result}
+        json_doc = json.dumps([valid, result])
+        response = flask.make_response(json_doc)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     
     json_doc = json.dumps(result)
     response = flask.make_response(json_doc)
@@ -49,7 +52,10 @@ def reg_details():
     query = {"classid": flask.request.args.get("classid")}
     valid, result = database.reg_details(query)
     if not valid:
-        result = {"error": result}
+        json_doc = json.dumps([valid, result])
+        response = flask.make_response(json_doc)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
     json_doc = json.dumps(result)
     response = flask.make_response(json_doc)
