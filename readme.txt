@@ -5,30 +5,27 @@ Arnold Jiang (aj9183)
 ----------------------------------------------------------------------------
 Partner 1:
 ----------------------------------------------------------------------------
-Amanda: I w
+Amanda: 
 
-I worked on the basic framework for the html files. I also wrote 
-all of the database.py logic by incorporating the sql logic from assignment
-1. On the database.py, I also reformatted the return output so that it can be
-processed by reg.py. I also wrote all of the Flask logic in reg.py, 
-including using the flask.request.args.get methods, calling the database 
-functions, calling the flask.render_template methods. I also implemented 
-all of the cookies logic in reg.py. Finally, I wrote the runserver.py main
-method. 
+I wrote the convert to html functions, handle response functions, 
+handle error functions, get overview functionss, debounced functions, and
+setup function for overviews and details in the index.html. I developed the 
+core logic for each function using jQuery, which provided a foundation for 
+Arnold to integrate Bootstrap styling. I also worked on all of the error 
+handling, including implementation and testing. 
  
 ---------------------------------------------------------------------------
 Partner 2:
 ----------------------------------------------------------------------------
 Arnold: 
 
-I helped Amanda with creating the regdetails and regoverviews html files. 
-Specifically, I wrote the html code for adding inline CSS styling using HTML
-attributes. I integrated the Flask and Django code to work concurrently with
-the SQL querying. I added the testing modules to the reg.py. I worked on 
-the error handling portion of the project. I also created the testing 
-modules for the reg.py file. I also resolved the issues with the cookie 
-and worked on the "another class search" feature. I resolved an issue with
-the server not properly running.
+I fixed the logic in the index.html file and the reg.py file to get the
+application running on the webpage. I also bootstrapped the entire app in
+the index.html file. This includes the sticky header, the sticky footer,
+the modal, and the general div that includes the reg_overview tables. I
+also worked on testing. I developed the testing suite and I also modified
+the logic that Amanda had in place for the functions in the index.html file
+to use AJAX instead of JQuery.
 
 ----------------------------------------------------------------------------
 Help Received:
@@ -39,6 +36,8 @@ Ambri OH (3/28)
 Jocelyn OH (3/28)
 Jocelyn OH (3/29)
 Xinran OH (3/31)
+Ambri OH (4/4)
+Jocelyn OH (4/4)
 
 ----------------------------------------------------------------------------
 Time Spent: 
@@ -53,8 +52,11 @@ Sources of Information: EdStem, Lecture handouts, course page
 ----------------------------------------------------------------------------
 Learnings:
 ----------------------------------------------------------------------------
-The assignment helped us gain a better understanding of how to deliver
-and run an application using python through routing and basic http requests,
-all of which were new concepts to us. We also gained a better understanding
-of using Django and Flask as well as writing HTML for the first time, which
-helped our understanding of how to develop front end code.
+This assignment helped us learn how the frontend and backend components
+interact in a web application. We gained a better understanding of how to
+use Ajax, JSON, and jQuery, most of which were unfamiliar to us before 
+doing this assignment. We also learned how to use Bootstrap. We enjoyed
+making the final product and observing how the frontend styling improved 
+from Assignment 3 to Assignment 4.  
+
+
