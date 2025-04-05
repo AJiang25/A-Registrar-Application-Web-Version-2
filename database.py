@@ -15,7 +15,7 @@ import contextlib
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
 #-----------------------------------------------------------------------
 def reg_overviews(query):
-    try:
+    # try:
         with sqlite3.connect(
             DATABASE_URL,
             isolation_level = None,
@@ -74,12 +74,12 @@ SELECT DISTINCT cl.classid, cr.dept, cr.coursenum, c.area, c.title
 
                 return [True, result]
 
-    except Exception as e:
-        print(f"Error in reg_overviews: {str(e)}", file=sys.stderr)
-        return [
-            False,
-"A server error occurred. Please contact the system administrator."
-        ]
+#     except Exception as e:
+#         print(f"Error in reg_overviews: {str(e)}", file=sys.stderr)
+#         return [
+#             False,
+# "A server error occurred. Please contact the system administrator."
+#         ]
 #-----------------------------------------------------------------------
 def reg_details(query):
     try:

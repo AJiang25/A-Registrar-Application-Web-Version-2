@@ -8,6 +8,7 @@
 import flask
 import database
 import json
+import sys
 
 #-----------------------------------------------------------------------
 
@@ -46,6 +47,7 @@ def reg_overviews():
         response.headers['Content-Type'] = 'application/json'
         return response
     except Exception as e:
+        print(f"Error in reg_overviews: {str(e)}", file=sys.stderr)
         json_doc = json.dumps([False,
 "A server error occurred. Please contact the system administrator."])
         response = flask.make_response(json_doc)

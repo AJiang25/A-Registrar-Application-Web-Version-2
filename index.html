@@ -213,14 +213,24 @@
             }
 
             function handleResponseOverviews(response) {
-                let html = convertToHTMLOverviews(response);
-                $('#resultsDiv').html(html);
+                if(response[0]==false){
+                    alert(response[1])
+                    return;
+                } else{
+                    let html = convertToHTMLOverviews(response);
+                    $('#resultsDiv').html(html);
+                }               
             }
 
             function handleResponseDetails(response) {
-                let html = convertToHTMLDetails(response);
-                $('#detailsModalBody').html(html);
-                $('#detailsModal').modal('show');
+                if(response[0]==false){
+                    alert(response[1])
+                    return;
+                } else{
+                    let html = convertToHTMLDetails(response);
+                    $('#detailsModalBody').html(html);
+                    $('#detailsModal').modal('show');
+                }        
             }
 
             function handleError() {
