@@ -105,74 +105,80 @@ def main():
 
         # Add more tests here.
         # Coverage Case Testing
-        run_test(server_url, browser_process, {})
-        run_test(server_url, browser_process, {'dept':'COS'})
-        run_test(server_url, browser_process, {'coursenum':'333'})
-        run_test(server_url, browser_process, {'coursenum':'240'})
-        run_test(server_url, browser_process, {'coursenum':'226'})
-        run_test(server_url, browser_process, {'coursenum':'217'})
-        run_test(server_url, browser_process, {'coursenum':'445'})
-        run_test(server_url, browser_process, {'coursenum':'320'})
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {})
+        run_test(server_url, browser_process, delay, {'dept':'COS'})
+        run_test(server_url, browser_process, delay,
+                 {'coursenum':'333'})
+        run_test(server_url, browser_process, delay,
+                 {'coursenum':'240'})
+        run_test(server_url, browser_process, delay,
+                 {'coursenum':'226'})
+        run_test(server_url, browser_process, delay,
+                 {'coursenum':'217'})
+        run_test(server_url, browser_process, delay,
+                 {'coursenum':'445'})
+        run_test(server_url, browser_process, delay,
+                 {'coursenum':'320'})
+        run_test(server_url, browser_process, delay, {
             'coursenum':'333',
             'area':'STX'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'coursenum':'342',
             'area':'QR'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'dept':'CHM',
             'coursenum':'408'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'area':'EM',
             'title':'Ethics',
         })
-        run_test(server_url, browser_process, {'coursenum':'b'})
-        run_test(server_url, browser_process, {'area':'Qr'})
-        run_test(server_url, browser_process, {'area': 'Qr'})
-        run_test(server_url, browser_process, {'title': 'intro'})
-        run_test(server_url, browser_process, {'title': 'science'})
-        run_test(server_url, browser_process, {'title': 'C_S'})
-        run_test(server_url, browser_process, {'title': 'c%S'})
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {'coursenum':'b'})
+        run_test(server_url, browser_process, delay, {'area':'QR'})
+        run_test(server_url, browser_process, delay, {'title': 'intro'})
+        run_test(server_url, browser_process, delay,
+                 {'title': 'science'})
+        run_test(server_url, browser_process, delay, {'title': 'C_S'})
+        run_test(server_url, browser_process, delay, {'title': 'c%S'})
+        run_test(server_url, browser_process, delay, {
             'dept': 'cos', 'coursenum': '3'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'dept': 'COS',
             'area': 'qr',
             'coursenum': '2',
             'title': 'intro'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'dept': 'COS',
             'area': 'ST',
             'coursenum': '233',
             'title': 'An'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'dept':'COS',
             'area': 'qr',
             'coursenum': '2',
             'title': 'apple'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'title': 'Independent Study'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'title': 'Independent Study '
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'title': 'Independent Study  '
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'title': ' Independent Study'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'title': '  Independent Study'
         })
-        run_test(server_url, browser_process, {
+        run_test(server_url, browser_process, delay, {
             'title': '-c'
         })
 

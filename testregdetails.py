@@ -4,7 +4,6 @@
 #-----------------------------------------------------------------------
 
 import sys
-import time
 import argparse
 import playwright.sync_api
 
@@ -37,7 +36,6 @@ def get_args():
 #-----------------------------------------------------------------------
 
 def print_flush(message):
-
     print(message)
     sys.stdout.flush()
 
@@ -62,7 +60,6 @@ def run_test(server_url, browser_process, classid):
 
     except Exception as ex:
         print(str(ex), file=sys.stderr)
-
 
 #-----------------------------------------------------------------------
 

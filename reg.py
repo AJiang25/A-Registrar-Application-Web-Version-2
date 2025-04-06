@@ -5,10 +5,10 @@
 # Authors: Arnold Jiang and Amanda Chan
 #-----------------------------------------------------------------------
 # imports
-import flask
-import database
 import json
 import sys
+import flask
+import database
 
 #-----------------------------------------------------------------------
 
@@ -33,15 +33,12 @@ def reg_overviews():
     try:
         # Convert the result from database files as json
         valid, result = database.reg_overviews(query)
-        # ASK QUESTION HERE:
-        # The result is not what it is supposed to be for error handling. I would ask about this in OH
-        # THIS ISSUE IS PRESENT IN reg_details() too.
         if not valid:
             json_doc = json.dumps([valid, result])
             response = flask.make_response(json_doc)
             response.headers['Content-Type'] = 'application/json'
             return response
-        
+
         json_doc = json.dumps(result)
         response = flask.make_response(json_doc)
         response.headers['Content-Type'] = 'application/json'
@@ -71,16 +68,13 @@ def reg_details():
         response = flask.make_response(json_doc)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
-    except Exception as e:
+
+    except Exception:
         json_doc = json.dumps([False,
 "A server error occurred. Please contact the system administrator."])
         response = flask.make_response(json_doc)
         response.headers['Content-Type'] = 'application/json'
         return response
-
-
-
 
 #-----------------------------------------------------------------------
 # For testing:
