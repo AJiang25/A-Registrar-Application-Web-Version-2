@@ -51,10 +51,12 @@ def run_test(server_url, browser_process, classid):
 
         link = page.get_by_text(classid).first
         link.click()
-
+        
+        page.wait_for_selector('#classDetailsTable')
         class_details_table = page.locator('#classDetailsTable')
         print_flush(class_details_table.inner_text())
 
+        page.wait_for_selector('#courseDetailsTable')
         course_details_table = page.locator('#courseDetailsTable')
         print_flush(course_details_table.inner_text())
 
